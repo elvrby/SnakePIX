@@ -183,6 +183,80 @@ document.addEventListener('DOMContentLoaded', () => {
         gameLoop = setInterval(update, 100);
     }
 
+    // Kustomisasi
+    // Tambahkan variabel untuk tema warna
+let currentTheme = {
+    snakeHead: '#45a049',
+    snakeBody: '#4CAF50',
+    food: '#ff4444'
+};
 
-    
+// Daftar tema warna
+const colorThemes = {
+    default: {
+        snakeHead: '#45a049',
+        snakeBody: '#4CAF50',
+        food: '#ff4444'
+    },
+    'red-yellow': {
+        snakeHead: '#cc0000',
+        snakeBody: '#ff4444',
+        food: '#ffd700'
+    },
+    'white-red': {
+        snakeHead: '#dddddd',
+        snakeBody: '#ffffff',
+        food: '#ff4444'
+    }
+};
+
+// Tambahkan event listener untuk pemilihan warna
+document.querySelectorAll('.color-option').forEach(option => {
+    option.addEventListener('click', function() {
+        // Hapus class selected dari semua option
+        document.querySelectorAll('.color-option').forEach(btn => {
+            btn.classList.remove('selected');
+        });
+        
+        // Tambahkan class selected ke option yang dipilih
+        this.classList.add('selected');
+        
+        // Update tema yang dipilih
+        const theme = this.dataset.theme;
+        currentTheme = colorThemes[theme];
+        
+        // Simpan preferensi ke localStorage
+        localStorage.setItem('snakeColorTheme', theme);
+    });
+});
+
+// Load tema yang disimpan
+window.addEventListener('load', () => {
+    const savedTheme = localStorage.getItem('snakeColorTheme') || 'default';
+    const themeButton = document.querySelector(`[data-theme="${savedTheme}"]`);
+    themeButton.click();
+});
+
+// Modifikasi fungsi draw
+function draw() {
+    // Clear canvas
+    ctx.fillStyle = '#2d2d2d';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw snake
+    snake.forEach((segment, index) => {
+        if(index === 0) {
+            ctx.fillStyle = currentTheme.snakeHead;
+        } else {
+            ctx.fillStyle = currentTheme.snakeBody;
+        }
+        ctx.fillRect(segment.x, segment.y, gridSize - 2, gridSize - 2);
+    });
+
+    // Draw food
+    ctx.fillStyle = currentTheme.food;
+    ctx.fillRect(food.x, food.y, gridSize - 2, gridSize - 2);
+}
+
+
 });
