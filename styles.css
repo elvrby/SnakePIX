@@ -11,6 +11,10 @@ body {
     touch-action: manipulation;
 }
 
+.Icon{
+    width: 100px;
+}
+
 .hidden {
     display: none !important;
 }
