@@ -2,34 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Snake Game</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="main-menu">
         <h1>Snake Game</h1>
+        <div class="color-picker">
+            <h3>Pilih Tema Warna:</h3>
+            <div class="color-options">
+                <button class="color-option" data-theme="default">
+                    <div class="snake-color" style="background: #4CAF50"></div>
+                    <div class="food-color" style="background: #ff4444"></div>
+                </button>
+                <button class="color-option" data-theme="red-yellow">
+                    <div class="snake-color" style="background: #ff4444"></div>
+                    <div class="food-color" style="background: #ffd700"></div>
+                </button>
+                <button class="color-option" data-theme="white-red">
+                    <div class="snake-color" style="background: #ffffff"></div>
+                    <div class="food-color" style="background: #ff4444"></div>
+                </button>
+            </div>
+        </div>
         <button id="start-game">Start Game</button>
     </div>
-
-    <div class="color-picker">
-        <h3>Pilih Tema Warna:</h3>
-        <div class="color-options">
-            <button class="color-option" data-theme="default">
-                <div class="snake-color" style="background: #4CAF50"></div>
-                <div class="food-color" style="background: #ff4444"></div>
-            </button>
-            <button class="color-option" data-theme="red-yellow">
-                <div class="snake-color" style="background: #ff4444"></div>
-                <div class="food-color" style="background: #ffd700"></div>
-            </button>
-            <button class="color-option" data-theme="white-red">
-                <div class="snake-color" style="background: #ffffff"></div>
-                <div class="food-color" style="background: #ff4444"></div>
-            </button>
-        </div>
-    </div>
-    
 
     <div id="game-container" class="hidden">
         <div class="score-container">
@@ -37,13 +35,28 @@
             <div id="highest-score">Highest Score: 0</div>
         </div>
         <canvas id="game-board"></canvas>
+        <div id="mobile-controls" class="hidden">
+            <div class="control-row">
+                <button class="control-btn up">↑</button>
+            </div>
+            <div class="control-row">
+                <button class="control-btn left">←</button>
+                <button class="control-btn right">→</button>
+            </div>
+            <div class="control-row">
+                <button class="control-btn down">↓</button>
+            </div>
+        </div>
     </div>
 
     <div id="game-over-modal" class="modal hidden">
         <div class="modal-content">
             <h2>Game Over!</h2>
             <p id="final-score">Your Score: 0</p>
-            <button id="restart-game">Restart Game</button>
+            <div class="modal-buttons">
+                <button id="restart-game">Restart Game</button>
+                <button id="main-menu-btn">Main Menu</button>
+            </div>
         </div>
     </div>
 

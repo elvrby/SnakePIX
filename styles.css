@@ -8,6 +8,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     min-height: 100vh;
+    touch-action: manipulation;
 }
 
 .hidden {
@@ -16,7 +17,7 @@ body {
 
 #main-menu {
     text-align: center;
-    margin-top: 2rem;
+    padding: 20px;
 }
 
 button {
@@ -50,31 +51,20 @@ button:hover {
     background-color: #2d2d2d;
     border-radius: 8px;
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    width: 600px;  /* Ukuran diperbesar */
-    height: 600px; /* Ukuran diperbesar */
-}
-
-#score-display, #highest-score {
-    font-size: 1.5rem; /* Ukuran font diperbesar */
-    font-weight: bold;
-    color: #4CAF50;
-    margin: 0 20px;
 }
 
 .score-container {
     display: flex;
     justify-content: space-between;
-    width: 600px; /* Sesuaikan dengan lebar game board */
+    width: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
 }
 
-#score-display {
-    top: -40px;
-    left: 0;
-}
-
-#highest-score {
-    top: -40px;
-    right: 0;
+#score-display, #highest-score {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #4CAF50;
 }
 
 .modal {
@@ -98,7 +88,21 @@ button:hover {
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
 
-/* Kustomisasi */
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    justify-content: center;
+}
+
+#main-menu-btn {
+    background-color: #555;
+}
+
+#main-menu-btn:hover {
+    background-color: #444;
+}
+
 .color-picker {
     margin: 20px 0;
 }
@@ -132,6 +136,55 @@ button:hover {
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-.color-option:hover {
-    transform: scale(1.05);
+@media (max-width: 768px) {
+    #game-board {
+        width: 95vw;
+        height: 95vw;
+        max-width: 400px;
+        max-height: 400px;
+    }
+
+    .score-container {
+        width: 95vw;
+        max-width: 400px;
+    }
+
+    #mobile-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .control-row {
+        display: flex;
+        justify-content: center;
+        gap: 80px;
+    }
+
+    .control-btn {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        font-size: 24px;
+        padding: 0;
+        background-color: rgba(255, 255, 255, 0.2);
+        border: 2px solid #4CAF50;
+        color: white;
+        touch-action: manipulation;
+    }
+
+    .control-btn:active {
+        background-color: #4CAF50;
+    }
+
+    .color-options {
+        flex-wrap: wrap;
+    }
+}
+
+@media (min-width: 769px) {
+    #mobile-controls {
+        display: none !important;
+    }
 }
