@@ -89,7 +89,11 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('load', () => {
         const savedTheme = localStorage.getItem('snakeColorTheme') || 'default';
         const themeButton = document.querySelector(`[data-theme="${savedTheme}"]`);
-        themeButton.click();
+        if(themeButton) {
+            themeButton.click();
+        }
+        highestScore = parseInt(localStorage.getItem('snakeHighScore')) || 0;
+        highestScoreDisplay.textContent = `Highest Score: ${highestScore}`;
     });
 
     // Mobile controls
@@ -257,6 +261,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function returnToMainMenu() {
         gameOverModal.classList.add('hidden');
+        highestScore = parseInt(localStorage.getItem('snakeHighScore')) || 0;
+        highestScoreDisplay.textContent = `Highest Score: ${highestScore}`;
         mainMenu.classList.remove('hidden');
         gameContainer.classList.add('hidden');
         clearInterval(gameLoop);
