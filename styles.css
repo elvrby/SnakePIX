@@ -11,7 +11,7 @@ body {
     touch-action: manipulation;
 }
 
-.Icon{
+.Icon {
     width: 100px;
 }
 
@@ -138,6 +138,32 @@ button:hover {
     margin: 5px;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Styles untuk pemilihan bahasa */
+.language-picker {
+    margin: 20px 0;
+}
+
+.language-options {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+.language-option {
+    padding: 10px;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #333;
+    transition: all 0.3s;
+}
+
+.language-option.selected {
+    border-color: #4CAF50;
+    transform: scale(1.1);
 }
 
 @media (max-width: 768px) {
