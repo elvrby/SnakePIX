@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('game-board');
     const ctx = canvas.getContext('2d');
     const startButton = document.getElementById('start-game');
+    const optionsButton = document.getElementById('options-btn');
+    const closeOptionsButton = document.getElementById('close-options');
+    const bugReportButton = document.getElementById('bug-report-btn');
     const restartButton = document.getElementById('restart-game');
     const mainMenuBtn = document.getElementById('main-menu-btn');
     const scoreDisplay = document.getElementById('score-display');
@@ -11,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainMenu = document.getElementById('main-menu');
     const gameOverModal = document.getElementById('game-over-modal');
     const mobileControls = document.getElementById('mobile-controls');
+    const optionsPopup = document.getElementById('options-popup');
   
     // Game variables
     let snake = [];
@@ -24,6 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let nextDirection = 'right';
     let gridSize;
     let tileCount;
+  
+    // Mobile control mode (button atau swipe)
+    let mobileControlMode = localStorage.getItem('snakeMobileControl') || 'button';
   
     // Color themes
     let currentTheme = {
@@ -61,7 +68,14 @@ document.addEventListener('DOMContentLoaded', () => {
         yourScore: "Your Score:",
         restartGame: "Restart Game",
         mainMenu: "Main Menu",
-        highestScore: "Highest Score"
+        highestScore: "Highest Score",
+        options: "Options",
+        close: "Close",
+        controllerMode: "Mobile Controller Mode:",
+        buttonController: "Button Controller",
+        swipeOnly: "Swipe Only",
+        bugReportTitle: "Bug Report",
+        reportBug: "Report Bug"
       },
       id: {
         gameTitle: "SnakePIX Game",
@@ -72,7 +86,14 @@ document.addEventListener('DOMContentLoaded', () => {
         yourScore: "Skor Anda:",
         restartGame: "Main Lagi",
         mainMenu: "Menu Utama",
-        highestScore: "Skor Tertinggi"
+        highestScore: "Skor Tertinggi",
+        options: "Opsi",
+        close: "Tutup",
+        controllerMode: "Kontroler Mobile:",
+        buttonController: "Button Controller",
+        swipeOnly: "Swipe Saja",
+        bugReportTitle: "Laporan Bug",
+        reportBug: "Laporkan Bug"
       },
       ru: {
         gameTitle: "SnakePIX Игра",
@@ -83,7 +104,14 @@ document.addEventListener('DOMContentLoaded', () => {
         yourScore: "Ваш счёт:",
         restartGame: "Перезапустить игру",
         mainMenu: "Главное меню",
-        highestScore: "Лучший счёт"
+        highestScore: "Лучший счёт",
+        options: "Настройки",
+        close: "Закрыть",
+        controllerMode: "Режим мобильного контроллера:",
+        buttonController: "Кнопочное управление",
+        swipeOnly: "Только свайп",
+        bugReportTitle: "Отчет об ошибке",
+        reportBug: "Сообщить об ошибке"
       }
     };
   
@@ -92,21 +120,38 @@ document.addEventListener('DOMContentLoaded', () => {
       const t = translations[lang];
       document.getElementById('game-title').textContent = t.gameTitle;
       document.getElementById('theme-picker-title').textContent = t.selectTheme;
-      document.getElementById('language-picker-title').textContent = t.selectLanguage;
       document.getElementById('start-game').textContent = t.startGame;
       document.getElementById('game-over-title').textContent = t.gameOver;
       finalScoreDisplay.textContent = `${t.yourScore} 0`;
       document.getElementById('restart-game').textContent = t.restartGame;
       document.getElementById('main-menu-btn').textContent = t.mainMenu;
       highestScoreDisplay.textContent = `${t.highestScore}: ${highestScore}`;
+      // Update teks pada popup Options
+      document.getElementById('options-popup-title').textContent = t.options;
+      document.getElementById('popup-language-title').textContent = t.selectLanguage;
+      document.getElementById('popup-controller-title').textContent = t.controllerMode;
+      document.getElementById('popup-bug-report-title').textContent = t.bugReportTitle;
+      optionsButton.textContent = t.options;
+      closeOptionsButton.textContent = t.close;
+      // Perbarui label untuk controller options
+      document.querySelectorAll('.controller-option').forEach(option => {
+        if(option.dataset.control === 'button'){
+          option.textContent = t.buttonController;
+        } else if(option.dataset.control === 'swipe'){
+          option.textContent = t.swipeOnly;
+        }
+      });
+      // Perbarui teks pada bug report button
+      document.getElementById('bug-report-btn').textContent = t.reportBug;
     }
   
-    // Inisialisasi ukuran grid permainan
+    // Inisialisasi ukuran grid permainan dengan penyesuaian mobile control mode
     function calculateGridSize() {
       const screenSize = Math.min(window.innerWidth, window.innerHeight);
       if(window.innerWidth <= 768) {
         tileCount = 15;
-        gridSize = Math.floor((screenSize * 0.95) / tileCount);
+        const multiplier = (mobileControlMode === 'swipe') ? 1.0 : 0.95;
+        gridSize = Math.floor((screenSize * multiplier) / tileCount);
       } else {
         tileCount = 30;
         gridSize = 20;
@@ -116,7 +161,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   
     calculateGridSize();
-    window.addEventListener('resize', calculateGridSize);
+    window.addEventListener('resize', () => {
+      calculateGridSize();
+      applyMobileControlSettings();
+    });
+  
+    // Event listener untuk membuka popup Options
+    optionsButton.addEventListener('click', () => {
+      optionsPopup.classList.remove('hidden');
+    });
+    // Event listener untuk menutup popup Options
+    closeOptionsButton.addEventListener('click', () => {
+      optionsPopup.classList.add('hidden');
+    });
+  
+    // Event listener untuk tombol Bug Report
+    bugReportButton.addEventListener('click', () => {
+      window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLScqxNSDpglEP-J_Bp5-FIZqoCFlmds7SuLgDrBr9Lz9DWru2g/viewform?usp=dialog";
+    });
   
     // Event listeners
     startButton.addEventListener('click', startGame);
@@ -135,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   
-    // Event listener untuk pemilihan bahasa
+    // Event listener untuk pemilihan bahasa (dalam popup Options)
     document.querySelectorAll('.language-option').forEach(option => {
       option.addEventListener('click', function() {
         document.querySelectorAll('.language-option').forEach(btn => btn.classList.remove('selected'));
@@ -146,7 +208,18 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   
-    // Memuat tema dan bahasa yang tersimpan saat load halaman
+    // Event listener untuk pemilihan mode kontrol (dalam popup Options)
+    document.querySelectorAll('.controller-option').forEach(option => {
+      option.addEventListener('click', function() {
+        document.querySelectorAll('.controller-option').forEach(btn => btn.classList.remove('selected'));
+        this.classList.add('selected');
+        mobileControlMode = this.dataset.control;
+        localStorage.setItem('snakeMobileControl', mobileControlMode);
+        applyMobileControlSettings();
+      });
+    });
+  
+    // Memuat tema, bahasa, dan mobile control yang tersimpan saat load halaman
     window.addEventListener('load', () => {
       // Memuat tema warna
       const savedTheme = localStorage.getItem('snakeColorTheme') || 'default';
@@ -159,15 +232,23 @@ document.addEventListener('DOMContentLoaded', () => {
   
       // Memuat bahasa (default ke English)
       const savedLanguage = localStorage.getItem('snakeLanguage') || 'en';
-      const languageButton = document.querySelector(`[data-lang="${savedLanguage}"]`);
+      const languageButton = document.querySelector(`.language-option[data-lang="${savedLanguage}"]`);
       if(languageButton) {
         languageButton.click();
       } else {
         updateLanguage('en');
       }
+  
+      // Memuat mobile control mode (default ke button)
+      mobileControlMode = localStorage.getItem('snakeMobileControl') || 'button';
+      const controllerButton = document.querySelector(`.controller-option[data-control="${mobileControlMode}"]`);
+      if(controllerButton) {
+        controllerButton.classList.add('selected');
+      }
+      applyMobileControlSettings();
     });
   
-    // Mobile controls
+    // Mobile controls (untuk mode "Button Controller")
     document.querySelectorAll('.control-btn').forEach(button => {
       button.addEventListener('touchstart', (e) => {
         e.preventDefault();
@@ -197,11 +278,23 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
     }, false);
   
+    // Fungsi untuk menerapkan setting mobile control mode
+    function applyMobileControlSettings() {
+      if(window.innerWidth <= 768) {
+        if(mobileControlMode === 'button') {
+          mobileControls.classList.remove('hidden');
+        } else {
+          mobileControls.classList.add('hidden');
+        }
+        calculateGridSize();
+      }
+    }
+  
     // Fungsi permainan
     function startGame() {
       mainMenu.classList.add('hidden');
       gameContainer.classList.remove('hidden');
-      if(window.innerWidth <= 768) mobileControls.classList.remove('hidden');
+      if(window.innerWidth <= 768) applyMobileControlSettings();
       resetGame();
       const gameSpeed = window.innerWidth <= 768 ? 150 : 100;
       gameLoop = setInterval(update, gameSpeed);
@@ -314,7 +407,8 @@ document.addEventListener('DOMContentLoaded', () => {
   
     function gameOver() {
       clearInterval(gameLoop);
-      finalScoreDisplay.textContent = `${translations[localStorage.getItem('snakeLanguage') || 'en'].yourScore} ${score}`;
+      const lang = localStorage.getItem('snakeLanguage') || 'en';
+      finalScoreDisplay.textContent = `${translations[lang].yourScore} ${score}`;
       gameOverModal.classList.remove('hidden');
     }
   

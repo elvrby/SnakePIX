@@ -11,7 +11,7 @@
     <img class="Icon" src="Images/SnakePIX-Icon.png" alt="">
     <h1 id="game-title">SnakePIX Game</h1>
     <div class="color-picker">
-      <h3 id="theme-picker-title">Pilih Tema Warna:</h3>
+      <h3 id="theme-picker-title">Select Color Theme:</h3>
       <div class="color-options">
         <button class="color-option" data-theme="default">
           <div class="snake-color" style="background: #4CAF50"></div>
@@ -27,15 +27,8 @@
         </button>
       </div>
     </div>
-    <!-- Menu Pemilihan Bahasa -->
-    <div class="language-picker">
-      <h3 id="language-picker-title">Choose Language:</h3>
-      <div class="language-options">
-        <button class="language-option" data-lang="en">English</button>
-        <button class="language-option" data-lang="id">Indonesia</button>
-        <button class="language-option" data-lang="ru">Русский</button>
-      </div>
-    </div>
+    <!-- Tombol Options -->
+    <button id="options-btn">Options</button>
     <button id="start-game">Start Game</button>
   </div>
 
@@ -55,6 +48,36 @@
       </div>
       <div class="control-row">
         <button class="control-btn down">↓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Options Popup Modal -->
+  <div id="options-popup" class="modal hidden">
+    <div class="modal-content">
+      <h2 id="options-popup-title">Options</h2>
+      <div class="options-content">
+        <div class="option-section">
+          <h3 id="popup-language-title">Choose Language:</h3>
+          <div class="language-options">
+            <button class="language-option" data-lang="en">English</button>
+            <button class="language-option" data-lang="id">Indonesia</button>
+            <button class="language-option" data-lang="ru">Русский</button>
+          </div>
+        </div>
+        <div class="option-section">
+          <h3 id="popup-controller-title">Mobile Controller Mode:</h3>
+          <div class="controller-options">
+            <button class="controller-option" data-control="button">Button Controller</button>
+            <button class="controller-option" data-control="swipe">Swipe Only</button>
+          </div>
+        </div>
+        <!-- Bug Report Section -->
+        <div class="option-section bug-report-section">
+          <h3 id="popup-bug-report-title">Bug Report</h3>
+          <button id="bug-report-btn">Report Bug</button>
+        </div>
+        <button id="close-options">Close</button>
       </div>
     </div>
   </div>

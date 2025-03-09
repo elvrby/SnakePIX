@@ -92,19 +92,21 @@ button:hover {
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
 
-.modal-buttons {
+/* Styling khusus untuk konten popup Options */
+.options-content {
     display: flex;
-    gap: 10px;
-    margin-top: 15px;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.option-section {
+    text-align: center;
+}
+
+.language-options, .controller-options {
+    display: flex;
+    gap: 15px;
     justify-content: center;
-}
-
-#main-menu-btn {
-    background-color: #555;
-}
-
-#main-menu-btn:hover {
-    background-color: #444;
 }
 
 .color-picker {
@@ -140,19 +142,7 @@ button:hover {
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-/* Styles untuk pemilihan bahasa */
-.language-picker {
-    margin: 20px 0;
-}
-
-.language-options {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    margin: 15px 0;
-}
-
-.language-option {
+.language-option, .controller-option {
     padding: 10px;
     border: 2px solid transparent;
     border-radius: 8px;
@@ -161,11 +151,16 @@ button:hover {
     transition: all 0.3s;
 }
 
-.language-option.selected {
+.language-option.selected, .controller-option.selected {
     border-color: #4CAF50;
     transform: scale(1.1);
 }
 
+#close-options {
+    margin-top: 10px;
+}
+
+/* Responsive styles */
 @media (max-width: 768px) {
     #game-board {
         width: 95vw;
